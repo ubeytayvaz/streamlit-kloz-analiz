@@ -2,3 +2,6 @@ streamlit
 PyPDF2
 python-docx
 PyMuPDF
+pytesseract
+pdf2image
+Pillow
