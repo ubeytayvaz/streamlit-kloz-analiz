@@ -22,7 +22,7 @@ CLAUSE_DEFINITIONS = {
     },
     "NMA 2738 Claims Control Clause": {
         "tr": "NMA 2738 Hasar Kontrol Klozu",
-        "keywords": ["claims control", "hasar kontrol", "NMA 2738", "claims", "hasar"]
+        "keywords": ["claims control", "hasar kontrol", "NMA 2738", "claims"]
     },
     "LMA3100 Sanction Limitation and Exclusion Clause": {
         "tr": "LMA3100 Yaptırım Sınırlama ve İstisna Klozu",
