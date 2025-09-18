@@ -36,8 +36,13 @@ CLAUSE_DEFINITIONS = {
         "keywords": [
             "contingent business interruption", "dolaylı kar kaybı", "tedarikçi riski", 
             "supplier risk", "müşteri riski", "customer risk", "erişimin engellenmesi", 
-            "prevention of access", "denial of access", "public authorities", "kamu otoriteleri"
+            "prevention of access", "denial of access", "public authorities", "kamu otoriteleri",
+            "Suppliers", "Customer", "Interdependency"
         ]
+    },
+    "T&D Lines": {
+        "tr": "İletim ve Dağıtım Hatları",
+        "keywords": ["Transmission", "Distribution", "iletim", "dağıtım", "T&D Lines"]
     }
 }
 
