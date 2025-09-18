@@ -101,7 +101,7 @@ def analyze_document_text(pages_content, clause_definitions):
     for page_data in pages_content:
         page_num = page_data['page']
         text = page_data['content']
-        sentences = re.split(r'(?<=[.!?])\s+', text)
+        sentences = re.split(r'(?<=[.!?\n])\s+', text)
 
         for en_clause, details in clause_definitions.items():
             # Tam eşleşmeleri ara
@@ -182,6 +182,8 @@ uploaded_file = st.file_uploader(
     type=["pdf", "docx", "png", "jpg", "jpeg"]
 )
 
+force_ocr = st.checkbox("Taranmış belge (OCR) analizini zorla", help="PDF'ten metin okuma sorunluysa veya belgenin taranmış kısımlar içerdiğini düşünüyorsanız bu seçeneği işaretleyin.")
+
 if uploaded_file is not None:
     if 'processed_file' not in st.session_state or st.session_state.processed_file != uploaded_file.name:
         st.session_state.processed_file = uploaded_file.name
@@ -192,10 +194,14 @@ if uploaded_file is not None:
         with st.spinner(f"'{uploaded_file.name}' içeriği okunuyor..."):
             pages_content = []
             if file_type == "application/pdf":
-                pages_content = extract_text_from_pdf(file_content)
-                if not pages_content or len("".join(p['content'] for p in pages_content).strip()) < 100:
-                    st.warning("Bu bir taranmış PDF gibi görünüyor. Metin okuma (OCR) işlemi başlatılıyor...")
+                if force_ocr:
+                    st.warning("OCR analizi zorunlu kılındı. İşlem normalden uzun sürebilir.")
                     pages_content = extract_text_with_ocr(file_content, is_pdf=True)
+                else:
+                    pages_content = extract_text_from_pdf(file_content)
+                    if not pages_content or len("".join(p['content'] for p in pages_content).strip()) < 100:
+                        st.warning("Bu bir taranmış PDF gibi görünüyor. Metin okuma (OCR) işlemi başlatılıyor...")
+                        pages_content = extract_text_with_ocr(file_content, is_pdf=True)
             elif file_type.startswith('image/'):
                 pages_content = extract_text_with_ocr(file_content, is_pdf=False)
             else: # docx
@@ -213,7 +219,7 @@ if uploaded_file is not None:
         with st.spinner("Belge analiz ediliyor..."):
             found_items = analyze_document_text(pages_content, CLAUSE_DEFINITIONS)
         
-        st.success(f"'{file_name}' analizi tamamlandı. {len(found_items)} potansiyel bulgu tespit edildi.")
+        st.success(f"'{file_name}' analizi tamamlandı. {len(found_items)} potensyiel bulgu tespit edildi.")
         st.markdown("---")
         
         st.header("🔍 Analiz Sonuçları")
