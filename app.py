@@ -17,19 +17,19 @@ CLAUSE_DEFINITIONS = {
     },
     "CL380 Institute Cyber Attack Exclusion": {
         "tr": "CL380 Siber Saldırı İstisnası Enstitü Klozu",
-        "keywords": ["cyber", "siber", "CL380", "hacker", "bilgisayar virüsü", "computer virus", "cyber attack", "siber saldırı"]
+        "keywords": ["cyber", "siber", "CL380", "CL 380", "hacker", "bilgisayar virüsü", "computer virus", "cyber attack", "siber saldırı"]
     },
     "LMA5394 Communicable Disease Exclusion": {
         "tr": "LMA5394 Bulaşıcı Hastalık İstisnası Klozu",
-        "keywords": ["communicable disease", "bulaşıcı hastalık", "LMA5394", "salgın", "epidemic", "pandemic", "pandemi"]
+        "keywords": ["communicable disease", "bulaşıcı hastalık", "LMA5394", "LMA 5394", "salgın", "epidemic", "pandemic", "pandemi"]
     },
     "NMA 2738 Claims Control Clause": {
         "tr": "NMA 2738 Hasar Kontrol Klozu",
-        "keywords": ["claims control", "hasar kontrol", "NMA 2738", "claims"]
+        "keywords": ["claims control", "hasar kontrol", "NMA 2738", "NMA2738", "claims"]
     },
     "LMA3100 Sanction Limitation and Exclusion Clause": {
         "tr": "LMA3100 Yaptırım Sınırlama ve İstisna Klozu",
-        "keywords": ["sanction", "yaptırım", "LMA3100", "ambargo", "embargo", "limitation", "sınırlama"]
+        "keywords": ["sanction", "yaptırım", "LMA3100", "LMA 3100", "ambargo", "embargo", "limitation", "sınırlama"]
     },
     "Contingent Business Interruption": {
         "tr": "Dolaylı Kar Kaybı / Koşullu İş Durması",
@@ -47,14 +47,15 @@ CLAUSE_DEFINITIONS = {
 }
 
 def extract_text_from_pdf(file_content):
-    """PDF'ten metin ve sayfa numaralarını çıkarır."""
+    """PDF'ten metin ve sayfa numaralarını PyMuPDF (fitz) kullanarak çıkarır."""
     pages_content = []
     try:
-        pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
-        for i, page in enumerate(pdf_reader.pages):
-            page_text = page.extract_text()
+        pdf_doc = fitz.open(stream=io.BytesIO(file_content), filetype="pdf")
+        for i, page in enumerate(pdf_doc):
+            page_text = page.get_text()
             if page_text:
                 pages_content.append({'page': i + 1, 'content': page_text})
+        pdf_doc.close()
         return pages_content
     except Exception:
         return []
